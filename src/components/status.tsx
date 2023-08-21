@@ -1,9 +1,11 @@
 import { Icon } from "@iconify/react";
+import Tooltip from "./tooltip";
 
 type IconProps = {
   iconName?: string;
   iconHeight?: number;
   iconWidth?: number;
+  message?: string;
 };
 
 const IconStatus = {
@@ -27,6 +29,13 @@ const IconStatusColor = {
   [IconStatus.Canceled]: "red",
 };
 
+const messages = {
+  [IconStatus.Created]: "Creada",
+  [IconStatus.Scheduled]: "A tiempo",
+  [IconStatus.Checked]: "Completada",
+  [IconStatus.Canceled]: "Vencida",
+};
+
 const Status = ({
   iconName = IconStatus.Created,
   iconHeight = 38,
@@ -35,12 +44,18 @@ const Status = ({
   return (
     <>
       {iconName && (
-        <Icon
-          icon={IconStatusName[iconName]}
-          color={IconStatusColor[iconName]}
-          width={iconWidth}
-          height={iconHeight}
-        />
+        <Tooltip
+          message={messages[iconName]}
+          position="top-10"
+          className="whitespace-nowrap"
+        >
+          <Icon
+            icon={IconStatusName[iconName]}
+            color={IconStatusColor[iconName]}
+            width={iconWidth}
+            height={iconHeight}
+          />
+        </Tooltip>
       )}
     </>
   );
