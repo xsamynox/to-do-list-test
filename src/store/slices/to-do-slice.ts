@@ -1,38 +1,46 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../store/store";
 
-// Define a type for the slice state
-interface CounterState {
-  value: number;
+interface TodoState {
+  id: string;
+  status: "scheduled" | "created" | "canceled" | "checked";
+  creationDate: Date | string;
+  dueDate: Date | string;
+  description: string;
+  isChecked: boolean;
 }
 
-// Define the initial state using that type
-const initialState: CounterState = {
-  value: 0,
-};
+const initialState: TodoState[] = [
+  {
+    id: "",
+    status: "created",
+    creationDate: "",
+    dueDate: "",
+    description: "",
+    isChecked: false,
+  },
+];
 
-export const counterSlice = createSlice({
-  name: "counter",
-  // `createSlice` will infer the state type from the `initialState` argument
+const toDoSlice = createSlice({
+  name: "todo",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    addTodo: (state, action: PayloadAction<TodoState>) => {
+      state.push(action.payload);
     },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    updateTodo: (
+      state,
+      action: PayloadAction<{ id: string } & Partial<TodoState>>
+    ) => {
+      const todoIndex = state.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      if (todoIndex !== -1)
+        state[todoIndex] = { ...state[todoIndex], ...action.payload };
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { addTodo, updateTodo } = toDoSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.counter.value;
-
-export default counterSlice.reducer;
+export default toDoSlice.reducer;
