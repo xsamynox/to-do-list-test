@@ -1,19 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { RootState } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, updateTodo } from "../store/slices/to-do-slice";
+import { addTodo, updateTodo } from "../store/slices/todoSlice";
+import { generateId } from "@/helpers/helpers";
+import { fetchTodos } from "@/store/thunks/todosThunks";
+import { CardStatus } from "@/types/enums";
 
 import Card from "@/components/card";
 import Button from "@/components/button";
 import AddCard from "@/components/addCard";
-import { generateId } from "@/helpers/helpers";
-
-enum CardStatus {
-  Created = "created",
-  Schedule = "scheduled",
-  Checked = "checked",
-  Canceled = "canceled",
-}
 
 export default function Home() {
   // This is use to generate today's date
@@ -28,7 +23,7 @@ export default function Home() {
     const newTodo = {
       id: uniqueId,
       status: CardStatus.Created,
-      creationDate: new Date().toISOString(),
+      creationDate: new Date().toString(),
       dueDate: "",
       description: "",
       isChecked: false,
@@ -65,6 +60,10 @@ export default function Home() {
         })
       );
     };
+
+  useEffect(() => {
+    dispatch(fetchTodos() as any);
+  }, []);
 
   return (
     <>
