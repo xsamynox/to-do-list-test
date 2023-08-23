@@ -1,4 +1,4 @@
-import Datepicker from "./date-picker";
+import Datepicker from "./datePicker";
 import Status from "./status";
 import classnames from "classnames";
 
