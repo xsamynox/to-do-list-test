@@ -1,19 +1,13 @@
+import { TodoState } from "@/types/interfaces";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-
-interface TodoState {
-  id: string;
-  status: "scheduled" | "created" | "canceled" | "checked";
-  creationDate: Date | string;
-  dueDate: Date | string;
-  description: string;
-  isChecked: boolean;
-}
+import { fetchTodos } from "../thunks/todosThunks";
+import { CardStatus } from "@/types/enums";
 
 const initialState: TodoState[] = [
   {
     id: "",
-    status: "created",
+    status: CardStatus.Created,
     creationDate: "",
     dueDate: "",
     description: "",
@@ -38,6 +32,13 @@ const toDoSlice = createSlice({
       if (todoIndex !== -1)
         state[todoIndex] = { ...state[todoIndex], ...action.payload };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchTodos.fulfilled, (state, action) => {
+      action.payload.forEach((todo) => {
+        state.push(todo);
+      });
+    });
   },
 });
 
