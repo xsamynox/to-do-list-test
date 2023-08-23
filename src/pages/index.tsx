@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { RootState } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, updateTodo } from "../store/slices/todoSlice";
+import { updateTodo } from "../store/slices/todoSlice";
 import { generateId } from "@/helpers/helpers";
-import { fetchTodos } from "@/store/thunks/todosThunks";
+import { addNewTodo, fetchTodos } from "@/store/thunks/todosThunks";
 import { CardStatus } from "@/types/enums";
 
 import Card from "@/components/card";
@@ -29,7 +29,7 @@ export default function Home() {
       isChecked: false,
     } as const;
 
-    dispatch(addTodo(newTodo));
+    dispatch(addNewTodo(newTodo) as any);
   };
 
   const handleCardChange =
@@ -110,7 +110,7 @@ export default function Home() {
                   key={todo.id}
                   description={todo.description}
                   status={todo.status}
-                  date={todo.dueDate.toString()}
+                  date={todo.dueDate}
                   isChecked={todo.isChecked}
                   id={todo.id}
                   handleCardChange={handleCardChange(todo.id)}

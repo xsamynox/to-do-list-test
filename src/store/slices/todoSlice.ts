@@ -1,27 +1,14 @@
 import { TodoState } from "@/types/interfaces";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { fetchTodos } from "../thunks/todosThunks";
-import { CardStatus } from "@/types/enums";
+import { fetchTodos, addNewTodo } from "../thunks/todosThunks";
 
-const initialState: TodoState[] = [
-  {
-    id: "",
-    status: CardStatus.Created,
-    creationDate: "",
-    dueDate: "",
-    description: "",
-    isChecked: false,
-  },
-];
+const initialState: TodoState[] = [];
 
 const toDoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    addTodo: (state, action: PayloadAction<TodoState>) => {
-      state.push(action.payload);
-    },
     updateTodo: (
       state,
       action: PayloadAction<{ id: string } & Partial<TodoState>>
@@ -34,14 +21,26 @@ const toDoSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchTodos.fulfilled, (state, action) => {
-      action.payload.forEach((todo) => {
-        state.push(todo);
-      });
-    });
+    builder
+      // Fetch To do list
+      .addCase(fetchTodos.fulfilled, (state, action) => {
+        action.payload.forEach((todo) => {
+          if (state.every((x) => x.id !== todo.id)) {
+            state.push(todo);
+          }
+        });
+      })
+
+      // Add a new to do
+      .addCase(
+        addNewTodo.fulfilled,
+        (state, action: PayloadAction<TodoState>) => {
+          state.push(action.payload);
+        }
+      );
   },
 });
 
-export const { addTodo, updateTodo } = toDoSlice.actions;
+export const { updateTodo } = toDoSlice.actions;
 
 export default toDoSlice.reducer;
