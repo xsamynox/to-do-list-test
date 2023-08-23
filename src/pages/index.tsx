@@ -5,7 +5,7 @@ import { addTodo, updateTodo } from "../store/slices/to-do-slice";
 
 import Card from "@/components/card";
 import Button from "@/components/button";
-import AddCard from "@/components/add-card";
+import AddCard from "@/components/addCard";
 import { generateId } from "@/helpers/helpers";
 
 enum CardStatus {
