@@ -1,7 +1,12 @@
 import { Todo } from "@/types/interfaces";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { fetchTodos, addNewTodo, deleteTodo } from "../thunks/todosThunks";
+import {
+  fetchTodos,
+  addNewTodo,
+  deleteTodo,
+  updateTodo,
+} from "../thunks/todosThunks";
 import { TodoState } from "@/types/types";
 
 const initialState: TodoState = { todos: [] };
@@ -26,6 +31,19 @@ const toDoSlice = createSlice({
         state.todos = state.todos.filter((todo) => {
           return todo.id !== action.payload;
         });
+      })
+      // Update one to do
+      .addCase(updateTodo.fulfilled, (state, action) => {
+        if (action.payload) {
+          const { id, ...updatedTodo } = action.payload;
+          const todoIndex = state.todos.findIndex((todo) => todo.id === id);
+          if (todoIndex !== -1) {
+            state.todos[todoIndex] = {
+              ...state.todos[todoIndex],
+              ...updatedTodo,
+            };
+          }
+        }
       });
   },
 });

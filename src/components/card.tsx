@@ -12,7 +12,9 @@ type CardProps = {
   isChecked?: boolean;
   id: string;
   date: Date | string;
-  handleCardChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDescriptionChange?: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
   handleCalendarChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheck: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDelete?: any;
@@ -25,7 +27,7 @@ const Card = ({
   isChecked = false,
   id,
   date,
-  handleCardChange,
+  handleDescriptionChange,
   handleCalendarChange,
   handleCheck,
   handleDelete,
@@ -54,7 +56,7 @@ const Card = ({
               type="text"
               value={description}
               placeholder="Descripción de la tarea"
-              onChange={handleCardChange}
+              onChange={handleDescriptionChange}
             />
           </div>
           <div className="flex gap-10 items-center">
