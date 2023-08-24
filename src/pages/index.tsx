@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import type { RootState } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
-import { updateTodo } from "../store/slices/todoSlice";
 import { generateId } from "@/helpers/helpers";
-import { addNewTodo, fetchTodos } from "@/store/thunks/todosThunks";
+import { addNewTodo, fetchTodos, deleteTodo } from "@/store/thunks/todosThunks";
 import { CardStatus } from "@/types/enums";
 
 import Card from "@/components/card";
@@ -14,7 +13,7 @@ export default function Home() {
   // This is use to generate today's date
   const [date] = useState(new Date());
 
-  const todos = useSelector((state: RootState) => state.todo);
+  const todos = useSelector((state: RootState) => state.todos.todos);
   const dispatch = useDispatch();
 
   const handleAddCard = () => {
@@ -34,32 +33,40 @@ export default function Home() {
 
   const handleCardChange =
     (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(updateTodo({ id, description: event.target.value }));
+      const updatedTodo = {
+        id,
+        description: event.target.value,
+      };
+      // dispatch(updateTodo({ id: todo., updatedTodo }) as any);
     };
 
   const handleCalendarChange =
     (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       const dueDate = event.target.value;
-      dispatch(
-        updateTodo({
-          id,
-          dueDate,
-          status: dueDate ? CardStatus.Schedule : CardStatus.Created,
-        })
-      );
+      // dispatch(
+      //   updateTodo({
+      //     id,
+      //     dueDate,
+      //     status: dueDate ? CardStatus.Schedule : CardStatus.Created,
+      //   })
+      // );
     };
 
   const handleCheck =
     (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
-      dispatch(
-        updateTodo({
-          id,
-          isChecked,
-          status: isChecked ? CardStatus.Checked : CardStatus.Created,
-        })
-      );
+      // dispatch(8AS568079
+      //   updateTodo({4Z
+      //     id,
+      //     isChecked,
+      //     status: isChecked ? CardStatus.Checked : CardStatus.Created,
+      //   })
+      // );
     };
+
+  const handleDeleteCard = (id: string) => {
+    dispatch(deleteTodo(id) as any);
+  };
 
   useEffect(() => {
     dispatch(fetchTodos() as any);
@@ -116,6 +123,7 @@ export default function Home() {
                   handleCardChange={handleCardChange(todo.id)}
                   handleCalendarChange={handleCalendarChange(todo.id)}
                   handleCheck={handleCheck(todo.id)}
+                  handleDelete={() => handleDeleteCard(todo.id)}
                 />
               ))}
 

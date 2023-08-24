@@ -1,6 +1,6 @@
 import { CardStatus } from "./enums";
 
-export interface TodoState {
+export interface Todo {
   id: string;
   status:
     | CardStatus.Created
