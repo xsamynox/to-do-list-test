@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { RootState } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { generateId } from "@/helpers/helpers";
@@ -13,10 +13,30 @@ import { CardStatus } from "@/types/enums";
 import Card from "@/components/card";
 import Button from "@/components/button";
 import AddCard from "@/components/addCard";
+import DropdownMenu from "@/components/dropdown/dropdownMenu";
+import { DropdownMenuItemProps } from "@/components/dropdown/dropdownMenuItem";
+
+const listMenuOrder: DropdownMenuItemProps[] = [
+  {
+    title: "Fecha de creación",
+    // handlebutton:
+  },
+  {
+    title: "Fecha de vencimiento",
+    // handlebutton:
+  },
+  {
+    title: "Estado de las tarjetas",
+    // handlebutton:
+  },
+];
 
 export default function Home() {
   // This is use to generate today's date
   const [date] = useState(new Date());
+  const [showOrder, setShowOrder] = useState(false);
+
+  const orderRef = useRef<HTMLDivElement>(null);
 
   const todos = useSelector((state: RootState) => state.todos.todos);
   const dispatch = useDispatch();
@@ -106,13 +126,24 @@ export default function Home() {
                 >
                   Filtrar
                 </Button>
-                <Button
-                  className="w-full hover:shadow-md"
-                  color="tertiary"
-                  iconName="fluent:arrow-sort-24-filled"
-                >
-                  Ordenar
-                </Button>
+
+                <div className="w-full z-50" ref={orderRef}>
+                  <Button
+                    onClick={() =>
+                      setShowOrder((prevShowOrder) => !prevShowOrder)
+                    }
+                    className="w-full hover:shadow-md"
+                    color="tertiary"
+                    iconName="fluent:arrow-sort-24-filled"
+                  >
+                    Ordenar
+                  </Button>
+                  <DropdownMenu
+                    parentRef={orderRef}
+                    isVisible={showOrder}
+                    items={listMenuOrder}
+                  />
+                </div>
               </div>
             </div>
 
