@@ -47,7 +47,7 @@ export default function Home() {
   };
 
   const handleDescriptionChange =
-    (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    (id: string) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       const updatedTodo = {
         id,
         description: event.target.value,
@@ -129,7 +129,7 @@ export default function Home() {
             <div className="flex justify-between items-center mshadow-md shadow-[rgba(0, 0, 0, 0.25)] text-gray-900 py-4 w-full mb-1">
               <div className="w-3/12">
                 <Button className="w-full" color="primary">
-                  Liberar Seleccionadas
+                  Liberar Tareas listas
                 </Button>
               </div>
               <div className="w-4/6 flex">
