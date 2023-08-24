@@ -8,13 +8,42 @@ import {
   updateTodo,
 } from "../thunks/todosThunks";
 import { TodoState } from "@/types/types";
+import { CardStatus } from "@/types/enums";
 
 const initialState: TodoState = { todos: [] };
+
+export const statusPriority: Record<CardStatus, number> = {
+  checked: 0,
+  created: 1,
+  scheduled: 2,
+  canceled: 3,
+};
 
 const toDoSlice = createSlice({
   name: "todo",
   initialState,
-  reducers: {},
+  reducers: {
+    sortByCreationDate: (state) => {
+      state.todos.sort(
+        (a, b) =>
+          new Date(a.creationDate).getTime() -
+          new Date(b.creationDate).getTime()
+      );
+    },
+    sortByDueDate: (state) => {
+      state.todos.sort(
+        (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+      );
+    },
+    sortByStatus: (state) => {
+      state.todos.sort((a, b) => {
+        const aDueDate = new Date(a.dueDate).getTime();
+        const bDueDate = new Date(b.dueDate).getTime();
+        aDueDate - bDueDate;
+        return statusPriority[b.status] - statusPriority[a.status];
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch To do list
@@ -48,6 +77,7 @@ const toDoSlice = createSlice({
   },
 });
 
-export const {} = toDoSlice.actions;
+export const { sortByCreationDate, sortByDueDate, sortByStatus } =
+  toDoSlice.actions;
 
 export default toDoSlice.reducer;

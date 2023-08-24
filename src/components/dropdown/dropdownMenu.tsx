@@ -34,7 +34,7 @@ const DropdownMenu = ({ parentRef, isVisible, items }: DropdownMenuProps) => {
         >
           <div className="bg-white flex flex-col w-full">
             {items.map((item) => (
-              <DropdownMenuItem {...item} />
+              <DropdownMenuItem key={item.title} {...item} />
             ))}
           </div>
         </div>

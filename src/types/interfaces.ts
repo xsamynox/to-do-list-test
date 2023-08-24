@@ -7,7 +7,7 @@ export interface Todo {
     | CardStatus.Schedule
     | CardStatus.Checked
     | CardStatus.Canceled;
-  creationDate: Date | string;
+  creationDate: Date;
   dueDate: Date | string;
   description: string;
   isChecked: boolean;

@@ -17,7 +17,7 @@ type CardProps = {
   ) => void;
   handleCalendarChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheck: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDelete?: any;
+  handleDelete?: () => void;
 };
 
 const Card = ({

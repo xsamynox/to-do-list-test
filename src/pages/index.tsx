@@ -15,21 +15,11 @@ import Button from "@/components/button";
 import AddCard from "@/components/addCard";
 import DropdownMenu from "@/components/dropdown/dropdownMenu";
 import { DropdownMenuItemProps } from "@/components/dropdown/dropdownMenuItem";
-
-const listMenuOrder: DropdownMenuItemProps[] = [
-  {
-    title: "Fecha de creación",
-    // handlebutton:
-  },
-  {
-    title: "Fecha de vencimiento",
-    // handlebutton:
-  },
-  {
-    title: "Estado de las tarjetas",
-    // handlebutton:
-  },
-];
+import {
+  sortByCreationDate,
+  sortByDueDate,
+  sortByStatus,
+} from "@/store/slices/todoSlice";
 
 export default function Home() {
   // This is use to generate today's date
@@ -47,7 +37,7 @@ export default function Home() {
     const newTodo = {
       id: uniqueId,
       status: CardStatus.Created,
-      creationDate: new Date().toString(),
+      creationDate: new Date(),
       dueDate: "",
       description: "",
       isChecked: false,
@@ -93,10 +83,34 @@ export default function Home() {
     dispatch(deleteTodo(id) as any);
   };
 
+  const handleSortByCreationDate = () => {
+    dispatch(sortByCreationDate());
+  };
+  const handleSortByDueDate = () => {
+    dispatch(sortByDueDate());
+  };
+  const handleSortByStatus = () => {
+    dispatch(sortByStatus());
+  };
+
+  const listMenuOrder: DropdownMenuItemProps[] = [
+    {
+      title: "Fecha de creación",
+      handleButton: handleSortByCreationDate,
+    },
+    {
+      title: "Fecha de vencimiento",
+      handleButton: handleSortByDueDate,
+    },
+    {
+      title: "Estado de las tarjetas",
+      handleButton: handleSortByStatus,
+    },
+  ];
+
   useEffect(() => {
     dispatch(fetchTodos() as any);
   }, []);
-
   return (
     <>
       <header className="bg-white shadow-md shadow-[rgba(0, 0, 0, 0.25)] ">
@@ -127,11 +141,14 @@ export default function Home() {
                   Filtrar
                 </Button>
 
-                <div className="w-full z-50" ref={orderRef}>
+                <div
+                  className="w-full z-50"
+                  ref={orderRef}
+                  onClick={() =>
+                    setShowOrder((prevShowOrder) => !prevShowOrder)
+                  }
+                >
                   <Button
-                    onClick={() =>
-                      setShowOrder((prevShowOrder) => !prevShowOrder)
-                    }
                     className="w-full hover:shadow-md"
                     color="tertiary"
                     iconName="fluent:arrow-sort-24-filled"
