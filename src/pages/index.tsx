@@ -1,25 +1,44 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { RootState } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, updateTodo } from "../store/slices/to-do-slice";
+import { generateId } from "@/helpers/helpers";
+import {
+  addNewTodo,
+  fetchTodos,
+  deleteTodo,
+  updateTodo,
+} from "@/store/thunks/todosThunks";
+import { CardStatus } from "@/types/enums";
 
 import Card from "@/components/card";
 import Button from "@/components/button";
 import AddCard from "@/components/addCard";
-import { generateId } from "@/helpers/helpers";
+import DropdownMenu from "@/components/dropdown/dropdownMenu";
+import { DropdownMenuItemProps } from "@/components/dropdown/dropdownMenuItem";
 
-enum CardStatus {
-  Created = "created",
-  Schedule = "scheduled",
-  Checked = "checked",
-  Canceled = "canceled",
-}
+const listMenuOrder: DropdownMenuItemProps[] = [
+  {
+    title: "Fecha de creación",
+    // handlebutton:
+  },
+  {
+    title: "Fecha de vencimiento",
+    // handlebutton:
+  },
+  {
+    title: "Estado de las tarjetas",
+    // handlebutton:
+  },
+];
 
 export default function Home() {
   // This is use to generate today's date
   const [date] = useState(new Date());
+  const [showOrder, setShowOrder] = useState(false);
 
-  const todos = useSelector((state: RootState) => state.todo);
+  const orderRef = useRef<HTMLDivElement>(null);
+
+  const todos = useSelector((state: RootState) => state.todos.todos);
   const dispatch = useDispatch();
 
   const handleAddCard = () => {
@@ -28,18 +47,22 @@ export default function Home() {
     const newTodo = {
       id: uniqueId,
       status: CardStatus.Created,
-      creationDate: new Date().toISOString(),
+      creationDate: new Date().toString(),
       dueDate: "",
       description: "",
       isChecked: false,
     } as const;
 
-    dispatch(addTodo(newTodo));
+    dispatch(addNewTodo(newTodo) as any);
   };
 
-  const handleCardChange =
+  const handleDescriptionChange =
     (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(updateTodo({ id, description: event.target.value }));
+      const updatedTodo = {
+        id,
+        description: event.target.value,
+      };
+      dispatch(updateTodo(updatedTodo) as any);
     };
 
   const handleCalendarChange =
@@ -50,7 +73,7 @@ export default function Home() {
           id,
           dueDate,
           status: dueDate ? CardStatus.Schedule : CardStatus.Created,
-        })
+        }) as any
       );
     };
 
@@ -62,9 +85,17 @@ export default function Home() {
           id,
           isChecked,
           status: isChecked ? CardStatus.Checked : CardStatus.Created,
-        })
+        }) as any
       );
     };
+
+  const handleDeleteCard = (id: string) => {
+    dispatch(deleteTodo(id) as any);
+  };
+
+  useEffect(() => {
+    dispatch(fetchTodos() as any);
+  }, []);
 
   return (
     <>
@@ -95,13 +126,24 @@ export default function Home() {
                 >
                   Filtrar
                 </Button>
-                <Button
-                  className="w-full hover:shadow-md"
-                  color="tertiary"
-                  iconName="fluent:arrow-sort-24-filled"
-                >
-                  Ordenar
-                </Button>
+
+                <div className="w-full z-50" ref={orderRef}>
+                  <Button
+                    onClick={() =>
+                      setShowOrder((prevShowOrder) => !prevShowOrder)
+                    }
+                    className="w-full hover:shadow-md"
+                    color="tertiary"
+                    iconName="fluent:arrow-sort-24-filled"
+                  >
+                    Ordenar
+                  </Button>
+                  <DropdownMenu
+                    parentRef={orderRef}
+                    isVisible={showOrder}
+                    items={listMenuOrder}
+                  />
+                </div>
               </div>
             </div>
 
@@ -111,12 +153,13 @@ export default function Home() {
                   key={todo.id}
                   description={todo.description}
                   status={todo.status}
-                  date={todo.dueDate.toString()}
+                  date={todo.dueDate}
                   isChecked={todo.isChecked}
                   id={todo.id}
-                  handleCardChange={handleCardChange(todo.id)}
+                  handleDescriptionChange={handleDescriptionChange(todo.id)}
                   handleCalendarChange={handleCalendarChange(todo.id)}
                   handleCheck={handleCheck(todo.id)}
+                  handleDelete={() => handleDeleteCard(todo.id)}
                 />
               ))}
 
