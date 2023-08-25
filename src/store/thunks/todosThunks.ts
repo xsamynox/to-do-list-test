@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import debounce from "lodash/debounce";
 
-export const todoApi = axios.create({ baseURL: "http://0.0.0.0:3001" });
+export const todoApi = axios.create({ baseURL: "http://localhost:3001" });
 
 export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
   const response = await todoApi.get<Todo[]>("/todos");
@@ -26,18 +26,17 @@ export const deleteTodo = createAsyncThunk(
   }
 );
 
-const debouncedPatch = debounce(
-  async (payload: { id: string } & Partial<Todo>) => {
-    const { id, ...updatedTodo } = payload;
+type UpdateTodoPayload = { id: string } & Partial<Omit<Todo, "status">>;
 
-    return todoApi.patch<Todo>(`/todos/${id}`, updatedTodo);
-  },
-  500
-);
+const debouncedPatch = debounce(async (payload: UpdateTodoPayload) => {
+  const { id, ...updatedTodo } = payload;
+
+  return todoApi.patch<Todo>(`/todos/${id}`, updatedTodo);
+}, 500);
 
 export const updateTodo = createAsyncThunk(
   "todos/updateTodo",
-  async (payload: { id: string } & Partial<Todo>) => {
+  async (payload: UpdateTodoPayload) => {
     debouncedPatch(payload);
     return payload;
   }

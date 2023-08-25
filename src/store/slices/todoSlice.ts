@@ -1,14 +1,15 @@
+import { setTodoStatus } from "@/helpers/helpers";
+import { CardStatus } from "@/types/enums";
 import { Todo } from "@/types/interfaces";
-import { createSlice } from "@reduxjs/toolkit";
+import { TodoState } from "@/types/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import {
-  fetchTodos,
   addNewTodo,
   deleteTodo,
+  fetchTodos,
   updateTodo,
 } from "../thunks/todosThunks";
-import { TodoState } from "@/types/types";
-import { CardStatus } from "@/types/enums";
 
 const initialState: TodoState = { todos: [] };
 
@@ -48,7 +49,7 @@ const toDoSlice = createSlice({
     builder
       // Fetch To do list
       .addCase(fetchTodos.fulfilled, (state, action) => {
-        state.todos = action.payload;
+        state.todos = action.payload.map(setTodoStatus);
       })
 
       // Add a new to do
@@ -67,10 +68,10 @@ const toDoSlice = createSlice({
           const { id, ...updatedTodo } = action.payload;
           const todoIndex = state.todos.findIndex((todo) => todo.id === id);
           if (todoIndex !== -1) {
-            state.todos[todoIndex] = {
+            state.todos[todoIndex] = setTodoStatus({
               ...state.todos[todoIndex],
               ...updatedTodo,
-            };
+            });
           }
         }
       });

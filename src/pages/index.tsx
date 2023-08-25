@@ -1,18 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import type { RootState } from "../store/store";
-import { useSelector, useDispatch } from "react-redux";
 import { generateId } from "@/helpers/helpers";
-import {
-  addNewTodo,
-  fetchTodos,
-  deleteTodo,
-  updateTodo,
-} from "@/store/thunks/todosThunks";
+import { addNewTodo, fetchTodos } from "@/store/thunks/todosThunks";
 import { CardStatus } from "@/types/enums";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 
-import Card from "@/components/card";
-import Button from "@/components/button";
 import AddCard from "@/components/addCard";
+import Button from "@/components/button";
+import Card from "@/components/card";
 import DropdownMenu from "@/components/dropdown/dropdownMenu";
 import { DropdownMenuItemProps } from "@/components/dropdown/dropdownMenuItem";
 import {
@@ -25,10 +20,11 @@ export default function Home() {
   // This is use to generate today's date
   const [date] = useState(new Date());
   const [showOrder, setShowOrder] = useState(false);
+  const [lastTodoId, setLastTodoId] = useState("");
 
   const orderRef = useRef<HTMLDivElement>(null);
 
-  const todos = useSelector((state: RootState) => state.todos.todos);
+  const todos = useSelector((state: RootState) => state.reducedTodos.todos);
   const dispatch = useDispatch();
 
   const handleAddCard = () => {
@@ -44,43 +40,7 @@ export default function Home() {
     } as const;
 
     dispatch(addNewTodo(newTodo) as any);
-  };
-
-  const handleDescriptionChange =
-    (id: string) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const updatedTodo = {
-        id,
-        description: event.target.value,
-      };
-      dispatch(updateTodo(updatedTodo) as any);
-    };
-
-  const handleCalendarChange =
-    (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const dueDate = event.target.value;
-      dispatch(
-        updateTodo({
-          id,
-          dueDate,
-          status: dueDate ? CardStatus.Schedule : CardStatus.Created,
-        }) as any
-      );
-    };
-
-  const handleCheck =
-    (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const isChecked = event.target.checked;
-      dispatch(
-        updateTodo({
-          id,
-          isChecked,
-          status: isChecked ? CardStatus.Checked : CardStatus.Created,
-        }) as any
-      );
-    };
-
-  const handleDeleteCard = (id: string) => {
-    dispatch(deleteTodo(id) as any);
+    setLastTodoId(uniqueId);
   };
 
   const handleSortByCreationDate = () => {
@@ -111,6 +71,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(fetchTodos() as any);
   }, []);
+
   return (
     <>
       <header className="bg-white shadow-md shadow-[rgba(0, 0, 0, 0.25)] ">
@@ -173,10 +134,8 @@ export default function Home() {
                   date={todo.dueDate}
                   isChecked={todo.isChecked}
                   id={todo.id}
-                  handleDescriptionChange={handleDescriptionChange(todo.id)}
-                  handleCalendarChange={handleCalendarChange(todo.id)}
-                  handleCheck={handleCheck(todo.id)}
-                  handleDelete={() => handleDeleteCard(todo.id)}
+                  isLastTodo={lastTodoId === todo.id}
+                  handleAddCard={handleAddCard}
                 />
               ))}
 
