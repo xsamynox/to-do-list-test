@@ -16,6 +16,7 @@
 ## 1. Empezando a utilizar la app
 
 Antes de comenzar, asegurate de tener instalado node y tu gestor de paquete de preferencia (npm || yarn) en tu computador.
+(Asegurate de tener una version de node == v18.17.1 (npm v9.6.7) o >)
 
 Para empezar a utilizar la App puedes hacer Fork o clonar este repositorio y luego:
 
@@ -64,7 +65,7 @@ Realizado:
 * [x] Calcular el estado respecto a la fecha actual versus la fecha de vencimiento de la tarea.
 * [x] Filtrar las tarjetas o to dos por texto
 * [x] Se utilizo un sistema de colores e iconos para que las tarjetas mostraran facilmente su estado
-* [x] Se permite ordenar la data por: 
+* [x] Se permite ordenar la data por:
   * [x] Según la fecha de creación de la tarjeta o to do (de mayor a menor)
   * [x] Segíún fecha de vencimiento de la tarjeta o to do (de menor a mayor)
   * [x] Según el estado de la tarjeta o to do (siendo más importante "atrasada", y el menos importante "liberada")
