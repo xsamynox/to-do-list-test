@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import debounce from "lodash/debounce";
 
-export const todoApi = axios.create({ baseURL: "http://localhost:3001" });
+export const todoApi = axios.create({ baseURL: "http://0.0.0.0:3001" });
 
 export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
   const response = await todoApi.get<Todo[]>("/todos");
