@@ -17,11 +17,15 @@ export const setTodoStatus = (todo: TodoState["todos"][number]) => {
 
   const currentDatetime = new Date().getTime();
   const dueDatetime = new Date(todo.dueDate).getTime();
+  const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+  const timeDifference = dueDatetime - currentDatetime;
 
-  let status = CardStatus.Schedule;
+  let status = CardStatus.Scheduled;
 
   if (todo.isChecked) status = CardStatus.Checked;
   else if (currentDatetime > dueDatetime) status = CardStatus.Canceled;
+  else if (timeDifference <= oneDayInMilliseconds)
+    status = CardStatus.AlmostDueDate;
 
   todo.status = status;
 

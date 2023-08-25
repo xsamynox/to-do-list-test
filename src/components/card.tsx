@@ -7,16 +7,25 @@ import { useDispatch } from "react-redux";
 import ContextMenu from "./contextMenu";
 import Datepicker from "./datePicker";
 import Status from "./status";
+import { CardStatus } from "@/types/enums";
 
 type CardProps = {
   className?: string;
   description: string;
-  status: string;
+  status: CardStatus;
   isChecked?: boolean;
   id: string;
   isLastTodo: boolean;
   date: Date | string;
   handleAddCard: () => void;
+};
+
+const CardBorderColorClasses = {
+  [CardStatus.Created]: "!border-t-4 !border-gray-300",
+  [CardStatus.Scheduled]: "!border-t-4 !border-blue-500",
+  [CardStatus.Checked]: "!border-t-4 !border-green-500",
+  [CardStatus.AlmostDueDate]: "!border-t-4 !border-yellow-500",
+  [CardStatus.Canceled]: "!border-t-4 !border-red-500",
 };
 
 const Card = ({
@@ -29,6 +38,12 @@ const Card = ({
   date,
   handleAddCard,
 }: CardProps) => {
+  const classes = classnames(
+    "block w-full rounded-lg border border-solid shadow-sm border-neutral-200 hover:shadow-md",
+    isChecked && "!bg-[#e5e7eb] opacity-50",
+    CardBorderColorClasses[status],
+    className
+  );
   const dispatch = useDispatch();
 
   const { showContextMenu, registerContextMenu } = useContextMenu();
@@ -74,15 +89,8 @@ const Card = ({
     }
   };
 
-  const classes = classnames(
-    "block w-full rounded-lg border border-solid shadow-sm border-neutral-200 hover:shadow-md",
-    isChecked && "!bg-[#e5e7eb] opacity-50",
-    className
-  );
-
   useEffect(() => {
     if (isLastTodo) {
-      console.log(document.querySelector<HTMLTextAreaElement>(`#${id}`));
       document.querySelector<HTMLTextAreaElement>(`#${id}`)?.focus();
     }
   }, [isLastTodo]);

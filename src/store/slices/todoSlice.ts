@@ -17,7 +17,8 @@ export const statusPriority: Record<CardStatus, number> = {
   checked: 0,
   created: 1,
   scheduled: 2,
-  canceled: 3,
+  almostDueDate: 3,
+  canceled: 4,
 };
 
 const toDoSlice = createSlice({
