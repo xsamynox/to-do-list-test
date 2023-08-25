@@ -38,8 +38,7 @@ Para la creación de esta interfaz se tuvo en cuenta el siguiente documento que 
 
 ## 3. Uso
 [Demo](https://drive.google.com/file/d/1h78SjskeQI2YizQzLa9nTxFSbSZFjQY6/view?usp=sharing)
-![UI](https://drive.google.com/drive/u/0/folders/1ex1awHEr-JYGIlHoStJMmMIy11z8M_BV)
-<img src="[https://pbs.twimg.com/media/EiAuAS8VoAA1-4T?format=jpg&name=large](https://drive.google.com/drive/u/0/folders/1ex1awHEr-JYGIlHoStJMmMIy11z8M_BV)" alt="JuveR" width="300px">
+<img src="https://drive.google.com/drive/u/0/folders/1ex1awHEr-JYGIlHoStJMmMIy11z8M_BV" alt="todoUI" width="300px">
 
 
 1. Al acceder a la app te daras cuenta que ya cuenta con cierta data que te permitirá observar mejor la ui ya que cuenta con diferentes tarjetas en sus distintos estados.
