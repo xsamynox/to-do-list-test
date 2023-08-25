@@ -41,3 +41,11 @@ export const updateTodo = createAsyncThunk(
     return payload;
   }
 );
+
+export const searchTodo = createAsyncThunk(
+  "todo/search",
+  async (searchTerm: string) => {
+    const response = await todoApi.get(`/todos?q=${searchTerm}`);
+    return response.data;
+  }
+);

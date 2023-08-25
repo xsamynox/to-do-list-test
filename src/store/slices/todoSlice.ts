@@ -8,6 +8,7 @@ import {
   addNewTodo,
   deleteTodo,
   fetchTodos,
+  searchTodo,
   updateTodo,
 } from "../thunks/todosThunks";
 
@@ -71,6 +72,9 @@ const toDoSlice = createSlice({
           }
         }
         state.todos = orderStatus(state.todos);
+      })
+      .addCase(searchTodo.fulfilled, (state, action) => {
+        state.todos = action.payload;
       });
   },
 });
