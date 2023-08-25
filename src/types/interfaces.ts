@@ -4,8 +4,9 @@ export interface Todo {
   id: string;
   status:
     | CardStatus.Created
-    | CardStatus.Schedule
+    | CardStatus.Scheduled
     | CardStatus.Checked
+    | CardStatus.AlmostDueDate
     | CardStatus.Canceled;
   creationDate: Date;
   dueDate: Date | string;

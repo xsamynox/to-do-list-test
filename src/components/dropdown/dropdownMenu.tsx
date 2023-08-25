@@ -27,7 +27,7 @@ const DropdownMenu = ({ parentRef, isVisible, items }: DropdownMenuProps) => {
       {isVisible && (
         <div
           style={{ top: parentHeight }}
-          className={`w-full absolute left-0 bg-white shadow-lg`}
+          className={`w-full absolute left-0 bg-white shadow-xl`}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"

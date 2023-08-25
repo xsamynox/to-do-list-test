@@ -1,36 +1,52 @@
-import { useEffect, useRef, useState } from "react";
-import type { RootState } from "../store/store";
-import { useSelector, useDispatch } from "react-redux";
 import { generateId } from "@/helpers/helpers";
-import {
-  addNewTodo,
-  fetchTodos,
-  deleteTodo,
-  updateTodo,
-} from "@/store/thunks/todosThunks";
+import { addNewTodo, fetchTodos } from "@/store/thunks/todosThunks";
 import { CardStatus } from "@/types/enums";
+import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 
-import Card from "@/components/card";
-import Button from "@/components/button";
 import AddCard from "@/components/addCard";
+import Button from "@/components/button";
+import Card from "@/components/card";
 import DropdownMenu from "@/components/dropdown/dropdownMenu";
 import { DropdownMenuItemProps } from "@/components/dropdown/dropdownMenuItem";
+import Search from "@/components/search";
 import {
   sortByCreationDate,
   sortByDueDate,
   sortByStatus,
 } from "@/store/slices/todoSlice";
+import { Todo } from "@/types/interfaces";
 
 export default function Home() {
   // This is use to generate today's date
   const [date] = useState(new Date());
   const [showOrder, setShowOrder] = useState(false);
+  const [lastTodoId, setLastTodoId] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const orderRef = useRef<HTMLDivElement>(null);
 
-  const todos = useSelector((state: RootState) => state.todos.todos);
+  const todos = useSelector((state: RootState) => state.reducedTodos.todos);
+  const filteredTodos = todos.filter((todo: Todo) =>
+    todo.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   const dispatch = useDispatch();
 
+  const handleShowData = (data: Todo[]) => {
+    return data.map((todo) => (
+      <Card
+        key={todo.id}
+        description={todo.description}
+        status={todo.status}
+        date={todo.dueDate}
+        isChecked={todo.isChecked}
+        id={todo.id}
+        isLastTodo={lastTodoId === todo.id}
+        handleAddCard={handleAddCard}
+      />
+    ));
+  };
   const handleAddCard = () => {
     const uniqueId = generateId();
 
@@ -44,43 +60,7 @@ export default function Home() {
     } as const;
 
     dispatch(addNewTodo(newTodo) as any);
-  };
-
-  const handleDescriptionChange =
-    (id: string) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const updatedTodo = {
-        id,
-        description: event.target.value,
-      };
-      dispatch(updateTodo(updatedTodo) as any);
-    };
-
-  const handleCalendarChange =
-    (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const dueDate = event.target.value;
-      dispatch(
-        updateTodo({
-          id,
-          dueDate,
-          status: dueDate ? CardStatus.Schedule : CardStatus.Created,
-        }) as any
-      );
-    };
-
-  const handleCheck =
-    (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const isChecked = event.target.checked;
-      dispatch(
-        updateTodo({
-          id,
-          isChecked,
-          status: isChecked ? CardStatus.Checked : CardStatus.Created,
-        }) as any
-      );
-    };
-
-  const handleDeleteCard = (id: string) => {
-    dispatch(deleteTodo(id) as any);
+    setLastTodoId(uniqueId);
   };
 
   const handleSortByCreationDate = () => {
@@ -103,14 +83,19 @@ export default function Home() {
       handleButton: handleSortByDueDate,
     },
     {
-      title: "Estado de las tarjetas",
+      title: "Estado de las tarjetas (Orden por defecto)",
       handleButton: handleSortByStatus,
     },
   ];
 
+  const handleSearch = (e: { target: { value: SetStateAction<string> } }) => {
+    setSearchTerm(e.target.value);
+  };
+
   useEffect(() => {
     dispatch(fetchTodos() as any);
   }, []);
+
   return (
     <>
       <header className="bg-white shadow-md shadow-[rgba(0, 0, 0, 0.25)] ">
@@ -126,10 +111,16 @@ export default function Home() {
       <main className="text-gray-900">
         <div className="flex justify-center items-center mx-8">
           <div className="flex flex-wrap justify-between items-center max-w-screen-lg w-full text-gray-900 py-4">
-            <div className="flex justify-between items-center mshadow-md shadow-[rgba(0, 0, 0, 0.25)] text-gray-900 py-4 w-full mb-1">
+            <div className="ml-auto">
+              <Search
+                searchTerm={searchTerm}
+                handleSearch={(e) => handleSearch(e)}
+              />
+            </div>
+            <div className="flex justify-between items-center mshadow-md shadow-[rgba(0, 0, 0, 0.25)] text-gray-900 pb-4 w-full mb-1">
               <div className="w-3/12">
                 <Button className="w-full" color="primary">
-                  Liberar Tareas listas
+                  Liberar completadas
                 </Button>
               </div>
               <div className="w-4/6 flex">
@@ -165,20 +156,9 @@ export default function Home() {
             </div>
 
             <section className="flex justify-between gap-y-3 flex-col w-full">
-              {todos.map((todo) => (
-                <Card
-                  key={todo.id}
-                  description={todo.description}
-                  status={todo.status}
-                  date={todo.dueDate}
-                  isChecked={todo.isChecked}
-                  id={todo.id}
-                  handleDescriptionChange={handleDescriptionChange(todo.id)}
-                  handleCalendarChange={handleCalendarChange(todo.id)}
-                  handleCheck={handleCheck(todo.id)}
-                  handleDelete={() => handleDeleteCard(todo.id)}
-                />
-              ))}
+              {searchTerm
+                ? handleShowData(filteredTodos)
+                : handleShowData(todos)}
 
               <AddCard handleAddCard={handleAddCard} />
             </section>

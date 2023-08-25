@@ -1,6 +1,7 @@
 export enum CardStatus {
   Created = "created",
-  Schedule = "scheduled",
+  Scheduled = "scheduled",
   Checked = "checked",
+  AlmostDueDate = "almostDueDate",
   Canceled = "canceled",
 }

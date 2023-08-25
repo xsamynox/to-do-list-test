@@ -4,40 +4,40 @@
       "id": 1,
       "status": "created",
       "creationDate": "Tue Aug 22 2023 20:27:26 GMT-0400 (hora estándar de Chile)",
-      "dueDate": "2023-08-10",
-      "description": "esta es mi primera nota",
+      "dueDate": "2023-08-24",
+      "description": "Fregar (No lo hice porque estaba haciendo la prueba 😂)",
       "isChecked": false
     },
     {
-      "id": "llpu6wcr2d7",
+      "id": "llpvrarqxzh",
       "status": "checked",
-      "creationDate": "2023-08-25T00:10:39.819Z",
-      "dueDate": "",
-      "description": "holaasndkjnakjdnaksjndjkasndjksdkjskja",
+      "creationDate": "2023-08-25T00:54:31.238Z",
+      "dueDate": "2023-08-08",
+      "description": "Hacer sorts",
       "isChecked": true
     },
     {
-      "id": "llpu7ic0kah",
-      "status": "scheduled",
-      "creationDate": "2023-08-25T00:11:08.304Z",
-      "dueDate": "2023-08-15",
-      "description": "",
+      "id": "llpyklk3koq",
+      "status": "created",
+      "creationDate": "2023-08-25T02:13:17.475Z",
+      "dueDate": "2023-08-24",
+      "description": "Sacar al perro",
+      "isChecked": true
+    },
+    {
+      "id": "llpylx3hbq3",
+      "status": "created",
+      "creationDate": "2023-08-25T02:14:19.085Z",
+      "dueDate": "2023-09-01",
+      "description": "Esperar que me llegue el correo de que pase la prueba ",
       "isChecked": false
     },
     {
-      "id": "llpu7ird4q7",
-      "status": "checked",
-      "creationDate": "2023-08-25T00:11:08.857Z",
-      "dueDate": "2023-08-18",
-      "description": "",
-      "isChecked": true
-    },
-    {
-      "id": "llpu7j67epj",
-      "status": "scheduled",
-      "creationDate": "2023-08-25T00:11:09.391Z",
-      "dueDate": "2023-09-08",
-      "description": "",
+      "id": "llq37awaqn9",
+      "status": "created",
+      "creationDate": "2023-08-25T04:22:55.210Z",
+      "dueDate": "2023-08-26",
+      "description": "Entregar la prueba",
       "isChecked": false
     }
   ]

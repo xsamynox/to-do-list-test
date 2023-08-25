@@ -1,14 +1,15 @@
+import { orderStatus, setTodoStatus } from "@/helpers/helpers";
+import { CardStatus } from "@/types/enums";
 import { Todo } from "@/types/interfaces";
-import { createSlice } from "@reduxjs/toolkit";
+import { TodoState } from "@/types/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import {
-  fetchTodos,
   addNewTodo,
   deleteTodo,
+  fetchTodos,
   updateTodo,
 } from "../thunks/todosThunks";
-import { TodoState } from "@/types/types";
-import { CardStatus } from "@/types/enums";
 
 const initialState: TodoState = { todos: [] };
 
@@ -16,7 +17,8 @@ export const statusPriority: Record<CardStatus, number> = {
   checked: 0,
   created: 1,
   scheduled: 2,
-  canceled: 3,
+  almostDueDate: 3,
+  canceled: 4,
 };
 
 const toDoSlice = createSlice({
@@ -36,19 +38,14 @@ const toDoSlice = createSlice({
       );
     },
     sortByStatus: (state) => {
-      state.todos.sort((a, b) => {
-        const aDueDate = new Date(a.dueDate).getTime();
-        const bDueDate = new Date(b.dueDate).getTime();
-        aDueDate - bDueDate;
-        return statusPriority[b.status] - statusPriority[a.status];
-      });
+      orderStatus(state.todos);
     },
   },
   extraReducers: (builder) => {
     builder
       // Fetch To do list
       .addCase(fetchTodos.fulfilled, (state, action) => {
-        state.todos = action.payload;
+        state.todos = orderStatus(action.payload.map(setTodoStatus));
       })
 
       // Add a new to do
@@ -67,12 +64,13 @@ const toDoSlice = createSlice({
           const { id, ...updatedTodo } = action.payload;
           const todoIndex = state.todos.findIndex((todo) => todo.id === id);
           if (todoIndex !== -1) {
-            state.todos[todoIndex] = {
+            state.todos[todoIndex] = setTodoStatus({
               ...state.todos[todoIndex],
               ...updatedTodo,
-            };
+            });
           }
         }
+        state.todos = orderStatus(state.todos);
       });
   },
 });
