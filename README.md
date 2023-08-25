@@ -28,7 +28,7 @@ yarn || npm run json-server - Para correr el Json-server.
 
 ```
 http://localhost:3000/ - Acá puedes ver la App lista para probar.
-http://localhost:3001/ - Acá se encuentra el servidor.
+http://localhost:3001/todos - Acá se encuentra el servidor.
 ```
 
 ## 2. Instrucciones solicitadas
