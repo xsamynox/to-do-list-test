@@ -36,6 +36,7 @@ const Card = ({
 
   const classes = classnames(
     "block w-full rounded-lg border border-solid shadow-sm border-neutral-200 hover:shadow-md",
+    isChecked && "!bg-[#e5e7eb] opacity-50",
     className
   );
 
@@ -52,15 +53,23 @@ const Card = ({
               onChange={handleCheck}
             />
             <textarea
-              className="border-0 focus:ring-0 focus:outline-none w-full resize-none h-auto"
+              className={classnames(
+                "border-0 focus:ring-0 focus:outline-none w-full resize-none h-auto",
+                isChecked && "line-through"
+              )}
               value={description}
               placeholder="Descripción de la tarea"
               onChange={handleDescriptionChange}
               rows={1}
+              disabled={isChecked}
             />
           </div>
           <div className="flex gap-10 items-center">
-            <Datepicker onChange={handleCalendarChange} value={date} />
+            <Datepicker
+              onChange={handleCalendarChange}
+              value={date}
+              isChecked={isChecked}
+            />
             <Status iconName={status} />
           </div>
         </div>
