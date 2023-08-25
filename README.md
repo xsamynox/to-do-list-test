@@ -34,10 +34,10 @@ http://localhost:3001/ - Acá se encuentra el servidor.
 ## 2. Instrucciones solicitadas
 
 Para la creación de esta interfaz se tuvo en cuenta el siguiente documento que contiene las indicaciones que debería cumplir esta aplicación:
-
-![Prueba técnica Licitabal](https://docs.google.com/document/d/1gCxteC8MJAYAllIwuoyj63R4DgQhJm9-ziTdTZAwE4w/edit#heading=h.cw1kvgd27tpl)
+[Prueba técnica Licitabal](https://docs.google.com/document/d/1gCxteC8MJAYAllIwuoyj63R4DgQhJm9-ziTdTZAwE4w/edit#heading=h.cw1kvgd27tpl)
 
 ## 3. Uso
+[Demo](https://drive.google.com/file/d/1h78SjskeQI2YizQzLa9nTxFSbSZFjQY6/view?usp=sharing)
 
 1. Al acceder a la app te daras cuenta que ya cuenta con cierta data que te permitirá observar mejor la ui ya que cuenta con diferentes tarjetas en sus distintos estados.
 
