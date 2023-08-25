@@ -9,12 +9,36 @@
       "isChecked": false
     },
     {
-      "id": 2,
+      "id": "llpu6wcr2d7",
       "status": "checked",
-      "creationDate": "Tue Aug 21 2023 20:27:26 GMT-0400 (hora estándar de Chile)",
-      "dueDate": "2023-08-20",
-      "description": "esta es mi segunda nota",
+      "creationDate": "2023-08-25T00:10:39.819Z",
+      "dueDate": "",
+      "description": "holaasndkjnakjdnaksjndjkasndjksdkjskja",
       "isChecked": true
+    },
+    {
+      "id": "llpu7ic0kah",
+      "status": "scheduled",
+      "creationDate": "2023-08-25T00:11:08.304Z",
+      "dueDate": "2023-08-15",
+      "description": "",
+      "isChecked": false
+    },
+    {
+      "id": "llpu7ird4q7",
+      "status": "checked",
+      "creationDate": "2023-08-25T00:11:08.857Z",
+      "dueDate": "2023-08-18",
+      "description": "",
+      "isChecked": true
+    },
+    {
+      "id": "llpu7j67epj",
+      "status": "scheduled",
+      "creationDate": "2023-08-25T00:11:09.391Z",
+      "dueDate": "2023-09-08",
+      "description": "",
+      "isChecked": false
     }
   ]
 }
