@@ -63,7 +63,7 @@ export default function Home() {
       handleButton: handleSortByDueDate,
     },
     {
-      title: "Estado de las tarjetas",
+      title: "Estado de las tarjetas (Orden por defecto)",
       handleButton: handleSortByStatus,
     },
   ];

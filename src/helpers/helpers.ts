@@ -1,5 +1,6 @@
-import { TodoState } from "@/types/types";
+import { statusPriority } from "@/store/slices/todoSlice";
 import { CardStatus } from "@/types/enums";
+import { TodoState } from "@/types/types";
 
 export function generateId() {
   const timestamp = Date.now().toString(36);
@@ -25,4 +26,13 @@ export const setTodoStatus = (todo: TodoState["todos"][number]) => {
   todo.status = status;
 
   return todo;
+};
+
+export const orderStatus = (todos: TodoState["todos"]) => {
+  return todos.sort((a, b) => {
+    const aDueDate = new Date(a.dueDate).getTime();
+    const bDueDate = new Date(b.dueDate).getTime();
+    aDueDate - bDueDate;
+    return statusPriority[b.status] - statusPriority[a.status];
+  });
 };

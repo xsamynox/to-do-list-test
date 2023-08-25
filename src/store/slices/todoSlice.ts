@@ -1,4 +1,4 @@
-import { setTodoStatus } from "@/helpers/helpers";
+import { orderStatus, setTodoStatus } from "@/helpers/helpers";
 import { CardStatus } from "@/types/enums";
 import { Todo } from "@/types/interfaces";
 import { TodoState } from "@/types/types";
@@ -37,19 +37,14 @@ const toDoSlice = createSlice({
       );
     },
     sortByStatus: (state) => {
-      state.todos.sort((a, b) => {
-        const aDueDate = new Date(a.dueDate).getTime();
-        const bDueDate = new Date(b.dueDate).getTime();
-        aDueDate - bDueDate;
-        return statusPriority[b.status] - statusPriority[a.status];
-      });
+      orderStatus(state.todos);
     },
   },
   extraReducers: (builder) => {
     builder
       // Fetch To do list
       .addCase(fetchTodos.fulfilled, (state, action) => {
-        state.todos = action.payload.map(setTodoStatus);
+        state.todos = orderStatus(action.payload.map(setTodoStatus));
       })
 
       // Add a new to do
@@ -74,6 +69,7 @@ const toDoSlice = createSlice({
             });
           }
         }
+        state.todos = orderStatus(state.todos);
       });
   },
 });
