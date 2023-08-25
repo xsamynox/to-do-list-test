@@ -38,7 +38,7 @@ Para la creación de esta interfaz se tuvo en cuenta el siguiente documento que 
 
 ## 3. Uso
 [Demo](https://drive.google.com/file/d/1h78SjskeQI2YizQzLa9nTxFSbSZFjQY6/view?usp=sharing)
-<img src="https://drive.google.com/drive/u/0/folders/1ex1awHEr-JYGIlHoStJMmMIy11z8M_BV" alt="todoUI" width="300px">
+![UI](https://drive.google.com/drive/u/0/folders/1ex1awHEr-JYGIlHoStJMmMIy11z8M_BV)
 
 
 1. Al acceder a la app te daras cuenta que ya cuenta con cierta data que te permitirá observar mejor la ui ya que cuenta con diferentes tarjetas en sus distintos estados.
